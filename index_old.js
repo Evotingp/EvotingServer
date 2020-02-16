@@ -209,27 +209,6 @@ app.post('/api/update_voter_profile',(req, res) => {
   });
 });
 
-app.post('/api/get_feedpost',(req, res) => {
-  let sql = "SELECT f.*,c.* FROM feedpost as f INNER JOIN candidate as c ON f.Cid = c.Cid";
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-  });
-});
-
-app.post('/api/add_feedpost',(req, res) => {
-
-  let sql = "INSERT INTO feedpost(Title,Image,Description,PostedDate,Cid) values (?,?,?,?,?)";
-  let query = conn.query(sql,[req.body.Title,req.body.Image,req.body.Description,req.body.PostedDate,req.body.Cid],(err, results) => {
-    
-	 if(results.affectedRows > 0)
-          res.send(JSON.stringify({"status": 200, "error": null, "message":  "Post Added Successfully"}));
-      else
-          res.send(JSON.stringify({"status": 404, "error": null, "message":  "Post Adding Fail"}));
-	
-	});
-});
-
 
 
 //Server listening
@@ -237,3 +216,10 @@ app.listen(3012,() =>{
   console.log('Server started on port 3012...');
 });
 
+app.get('/api/getfeedpost',(req, res) => {
+  let sql = "SELECT * FROM feedpost";
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
